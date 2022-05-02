@@ -1,3 +1,4 @@
+// Rabin-Karp
 // find first and last palindrome by using pattern p and string t, p will vary, and palindrome will be p + t (t + p)
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +18,9 @@ int main(){
     char *c = malloc(10000000 * sizeof(char));
     scanf("%s", c);
     int length = strlen(c);
-    char *s = malloc(length * sizeof(char));
-    strcpy(s, c); // s will be the input
+    char *s = malloc((length + 1) * sizeof(char));
+    strncpy(s, c, length); // s will be the input
+    s[length] = '\0';
     free(c);
     
     long long t, p, h, temp; // t = string comapre to pattern, p = pattern
@@ -75,6 +77,7 @@ int main(){
                     else if(t == p){
                         // printf("Let's compare\n");
                         repeat = 0;
+                        // if t = p, check character one by one
                         for(int a = 0; a <= tf - i; a++){
                             if(s[a] != s[tf - a]){
                                 repeat = 1;
@@ -94,6 +97,7 @@ int main(){
         // i and j encounter
         if(t == p){
             same = 1;
+            // if t = p, check character one by one
             for(int a = 0; a <= j; a++){
                 if(s[a] != s[tf - a]){
                     same = 0;
@@ -147,7 +151,7 @@ int main(){
                 else{
                     int repeat = 0;
                     // find new start index of t that t = p
-                    while(!repeat){
+                    while(1){
                         if(!repeat){
                             if(m <= 9)
                                 h = mod(pow(D, m), Q);
@@ -202,6 +206,43 @@ int main(){
                 tl = i;
             }
         }
+        printf("Let's Start!\n");
+        int dis_f = tf + 1, dis_l = length - tl;
+        if(dis_f > dis_l){
+            int add_length = length - dis_f;
+            printf("%d\n", add_length);
+            char *add = malloc((add_length + 1) * sizeof(char));
+            for(int i = 0; i < add_length; i++){
+                add[i] = s[length - 1 - i]; 
+            }
+            add[add_length] = '\0';
+            printf("%s%s\n", add, s);
+        }
+        else if (dis_f < dis_l){
+            int add_length = length - dis_l;
+            printf("%d\n", add_length);
+            char *add = malloc((add_length + 1) * sizeof(char));
+            for(int i = 0; i < add_length; i++){
+                add[i] = s[add_length - 1 - i];
+            }
+            add[add_length] = '\0';
+            printf("%s%s\n", s, add);
+        }
+        else{
+            int add_length = length - dis_l;
+            printf("%d\n", add_length);
+            char *add_1 = malloc((add_length + 1) * sizeof(char));
+            for(int i = 0; i < add_length; i++){
+                add_1[i] = s[length - 1 - i]; 
+            }
+            add_1[add_length] = '\0';
+            char *add_2 = malloc((add_length + 1) * sizeof(char));
+            for(int i = 0; i < add_length; i++){
+                add_2[i] = s[add_length - 1 - i];
+            }
+            add_2[add_length] = '\0';
+            printf("%s%s\n%s%s\n", add_1, s, s, add_2);
+        }
     }
     //------------------------------------------------------------printf last palindrome
     // for(int i = length - 1; i >= tl; i--){
@@ -209,34 +250,5 @@ int main(){
     // }
     // printf("\n");
     //------------------------------------------------------------
-    int dis_f = tf + 1, dis_l = length - tl;
-    if(dis_f > dis_l){
-        printf("%d\n", length - dis_f);
-        for(int i = length - 1; i > tf; i--){
-            printf("%c", s[i]);
-        }
-        printf("%s\n", s);
-    }
-    else if (dis_f < dis_l){
-        printf("%d\n", length - dis_l);
-        printf("%s", s);
-        for(int i = tl - 1; i >= 0; i--){
-            printf("%c", s[i]);
-        }
-        printf("\n");
-    }
-    else{
-        printf("%d\n", length - dis_l);
-        for(int i = length - 1; i > tf; i--){
-            printf("%c", s[i]);
-        }
-        printf("%s\n", s);
-        printf("%s", s);
-        for(int i = tl - 1; i >= 0; i--){
-            printf("%c", s[i]);
-        }
-        printf("\n");
-
-    }
     return 0;
 }
