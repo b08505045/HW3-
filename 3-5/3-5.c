@@ -136,9 +136,11 @@ int main() {
     }
     else{
         long long num_of_pairs = 0, num_of_same, consec, minus_consec, num_of_minus;
-        int m = 0, minus_m = 0;
+        int m = 0, minus_m;
         int a, minus_a;
         // calculate number of same
+
+        // copy Rabin[i]'s value to same
         node *same = malloc(k * sizeof(node));
         for(int i = 0; i < k; i++){
             same[i] = Rabin[i];
@@ -147,17 +149,16 @@ int main() {
         while(m < k - 1){
             if(same[m].num == same[m + 1].num){
                 consec = 1;
-                int a = m;
-                while(1){
+                a = m;
+                while(a < k - 1){
                     if(same[a].num == same[a + 1].num){
                         consec++;
                     }
                     else
                         break;
-                    if(a == k - 1) break;
                     a++;
                 }
-                num_of_pairs += fact(consec) / (fact(2) * fact(consec - 2));
+                num_of_pairs += (consec * (consec - 1)) / 2;
                 m = a + 1;
             }
             else
@@ -165,6 +166,7 @@ int main() {
         }
         num_of_same = num_of_pairs;
         // printf("num of pairs : %lld, num of same : %lld\n", num_of_pairs, num_of_same);
+
 
         // calculate number of similar
         // printf("\nsimilar :\n");
@@ -209,18 +211,17 @@ int main() {
                     consec = 1;
                     same[0] = Rabin[similar[m].index];
                     a = m;
-                    while(1){
+                    while(a < k - 1){
                         if(similar[a].num == similar[a + 1].num){
                             same[consec] = Rabin[similar[a + 1].index];
                             consec++;
                         }
                         else
                             break;
-                        if(a == k - 1) break;
                         a++;
                     }
                     // printf("consec : %d\n", consec);
-                    num_of_pairs += fact(consec) / (fact(2) * fact(consec - 2));
+                    num_of_pairs += (consec * (consec - 1)) / 2;
                     // printf("plus : %d\n", fact(consec) / (fact(2) * fact(consec - 2)));
                     m = a + 1;
                     //---------------------------------------------------------------------------
@@ -242,18 +243,17 @@ int main() {
                         if(same[minus_m].num == same[minus_m + 1].num){
                             minus_consec = 1;
                             minus_a = minus_m;
-                            while(1){
+                            while(minus_a < consec - 1){
                                 if(same[minus_a].num == same[minus_a + 1].num){
                                     minus_consec++;
                                 }
                                 else
                                     break;
-                                if(minus_a == consec - 1) break;
                                 minus_a++;
                             }
                             minus_m = minus_a + 1;
                             // printf("minus_consec : %d\n", minus_consec);
-                            num_of_minus += fact(minus_consec) / (fact(2) * fact(minus_consec - 2));
+                            num_of_minus += (minus_consec * (minus_consec - 1)) / 2;
                         }
                         else
                             minus_m++;
@@ -268,7 +268,7 @@ int main() {
             j--;
         }
         if(num_of_pairs)
-            printf("Yes\n%d\n", num_of_pairs);
+            printf("Yes\n%lld\n", num_of_pairs);
         else
             printf("No\n");
     }
