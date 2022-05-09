@@ -165,7 +165,7 @@ int main() {
         }
         num_of_same = num_of_pairs;
         // printf("num of pairs : %lld, num of same : %lld\n", num_of_pairs, num_of_same);
-        free(same);
+
         // calculate number of similar
         // printf("\nsimilar :\n");
         while(j >= 0){
@@ -206,7 +206,6 @@ int main() {
                 if(similar[m].num == similar[m + 1].num){
                     // printf("similar at %d, %d\n", m, m + 1);
                     // printf("same at discard index %d when %d!\n", j, m);
-                    same = malloc(k * sizeof(node));
                     consec = 1;
                     same[0] = Rabin[similar[m].index];
                     a = m;
